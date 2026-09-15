@@ -1,16 +1,11 @@
-// Инициализация MongoDB при первом запуске
-// Этот скрипт выполняется только один раз при создании контейнера
+const DB_NAME = 'frame_recall_db';
 
 try {
-  // Переключаемся на рабочую БД
-  db = db.getSiblingDB(process.env.MONGO_INITDB_DATABASE);
-  
-  // Создаём маркер инициализации
-  db.createCollection('_init_marker');
-  print('✓ База данных ' + process.env.MONGO_INITDB_DATABASE + ' инициализирована');
-  print('✓ Инициализация MongoDB завершена успешно');
-  
+    db = db.getSiblingDB(DB_NAME);
+    db.createCollection('_init_marker');
+    print('✓ База данных ' + DB_NAME + ' инициализирована');
+    print('✓ Инициализация MongoDB завершена успешно');
 } catch (e) {
-  print('✗ Ошибка при инициализации: ' + e.message);
-  throw e;
+    print('✗ Ошибка при инициализации: ' + e.message);
+    throw e;
 }
