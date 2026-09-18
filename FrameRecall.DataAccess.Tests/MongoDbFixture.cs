@@ -33,8 +33,7 @@ public class MongoDbFixture : IAsyncLifetime
     /// </summary>
     public MongoDbFixture()
     {
-        _container = new MongoDbBuilder()
-            .WithImage("mongo:8.3")
+        _container = new MongoDbBuilder("mongo:8.3")
             .Build();
     }
 
