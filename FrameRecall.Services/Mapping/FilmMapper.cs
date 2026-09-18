@@ -7,8 +7,18 @@ using DomainFilmRating = FrameRecall.Services.Models.FilmRating;
 
 namespace FrameRecall.Services.Mapping;
 
+/// <summary>
+/// Методы расширения для преобразования сущностей между слоями DataAccess и Services.
+/// Обеспечивает конвертацию моделей фильмов и их рейтингов.
+/// </summary>
 internal static class FilmMapper
 {
+    /// <summary>
+    /// Преобразует рейтинг из доменной модели в модель данных.
+    /// </summary>
+    /// <param name="rating">Рейтинг доменной модели.</param>
+    /// <returns>Рейтинг модели данных.</returns>
+    /// <exception cref="ArgumentOutOfRangeException">Выбрасывается если рейтинг не поддерживается.</exception>
     public static DataFilmRating ToDataAccess(this DomainFilmRating rating)
     {
         return rating switch
@@ -21,6 +31,12 @@ internal static class FilmMapper
         };
     }
 
+    /// <summary>
+    /// Преобразует фильм из доменной модели в модель данных.
+    /// </summary>
+    /// <param name="film">Фильм доменной модели.</param>
+    /// <returns>Фильм модели данных.</returns>
+    /// <exception cref="ArgumentNullException">Выбрасывается если film null.</exception>
     public static DataFilm ToDataAccess(this DomainFilm film)
     {
         ArgumentNullException.ThrowIfNull(film);
@@ -31,6 +47,12 @@ internal static class FilmMapper
         };
     }
 
+    /// <summary>
+    /// Преобразует рейтинг из модели данных в доменную модель.
+    /// </summary>
+    /// <param name="rating">Рейтинг модели данных.</param>
+    /// <returns>Рейтинг доменной модели.</returns>
+    /// <exception cref="ArgumentOutOfRangeException">Выбрасывается если рейтинг не поддерживается.</exception>
     public static DomainFilmRating ToDomain(this DataFilmRating rating)
     {
         return rating switch
@@ -43,6 +65,12 @@ internal static class FilmMapper
         };
     }
 
+    /// <summary>
+    /// Преобразует фильм из модели данных в доменную модель.
+    /// </summary>
+    /// <param name="film">Фильм модели данных.</param>
+    /// <returns>Фильм доменной модели.</returns>
+    /// <exception cref="ArgumentNullException">Выбрасывается если film null.</exception>
     public static DomainFilm ToDomain(this DataFilm film)
     {
         ArgumentNullException.ThrowIfNull(film);
