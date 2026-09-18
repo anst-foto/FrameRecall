@@ -1,4 +1,7 @@
 <Solution>
+  <Folder Name="/API/">
+    <Project Path="FrameRecall.WebApi/FrameRecall.WebApi.csproj" />
+  </Folder>
   <Folder Name="/DataAccess/">
     <Project Path="FrameRecall.DataAccess.Tests/FrameRecall.DataAccess.Tests.csproj" />
     <Project Path="FrameRecall.DataAccess/FrameRecall.DataAccess.csproj" />
@@ -8,6 +11,7 @@
     <Project Path="FrameRecall.Services/FrameRecall.Services.csproj" />
   </Folder>
   <Folder Name="/docker/">
+    <File Path=".dockerignore" />
     <File Path=".env" />
     <File Path=".env.example" />
     <File Path="docker-compose.yml" />
