@@ -37,8 +37,8 @@ internal static class FilmMapper
         {
             DataFilmRating.Undefined => DomainFilmRating.Undefined,
             DataFilmRating.Good => DomainFilmRating.Good,
-            DataFilmRating.Ok => DomainFilmRating.Ok, 
-            DataFilmRating.Bad => DomainFilmRating.Bad, 
+            DataFilmRating.Ok => DomainFilmRating.Ok,
+            DataFilmRating.Bad => DomainFilmRating.Bad,
             _ => throw new ArgumentOutOfRangeException(nameof(rating), rating, null)
         };
     }

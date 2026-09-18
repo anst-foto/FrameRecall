@@ -20,33 +20,35 @@ public class FilmService : IFilmService
     public FilmService(IRepository<DataFilm> repository)
     {
         ArgumentNullException.ThrowIfNull(repository);
-        
+
         _repository = repository;
     }
 
     public async Task<IReadOnlyCollection<DomainFilm>> GetAllAsync(CancellationToken cancellationToken = default)
     {
-        var films = await _repository.GetAllAsync(cancellationToken);
+        IReadOnlyCollection<DataFilm> films = await _repository.GetAllAsync(cancellationToken);
         return films.Select(f => f.ToDomain()).ToList();
     }
 
     public async Task<DomainFilm?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
     {
-        var films = await _repository.GetAllAsync(cancellationToken);
+        IReadOnlyCollection<DataFilm> films = await _repository.GetAllAsync(cancellationToken);
         return films.SingleOrDefault(f => f.Id == id)?.ToDomain();
     }
 
-    public async Task<IReadOnlyCollection<DomainFilm>> GetByTitleAsync(string title, CancellationToken cancellationToken = default)
+    public async Task<IReadOnlyCollection<DomainFilm>> GetByTitleAsync(string title,
+        CancellationToken cancellationToken = default)
     {
-        var films = await _repository.GetAllAsync(cancellationToken);
+        IReadOnlyCollection<DataFilm> films = await _repository.GetAllAsync(cancellationToken);
         return films.Where(f => f.Title == title)
             .Select(f => f.ToDomain())
             .ToList();
     }
 
-    public async Task<IReadOnlyCollection<DomainFilm>> GetByRatingAsync(DomainFilmRating rating, CancellationToken cancellationToken = default)
+    public async Task<IReadOnlyCollection<DomainFilm>> GetByRatingAsync(DomainFilmRating rating,
+        CancellationToken cancellationToken = default)
     {
-        var films = await _repository.GetAllAsync(cancellationToken);
+        IReadOnlyCollection<DataFilm> films = await _repository.GetAllAsync(cancellationToken);
         return films.Where(f => f.Rating == rating.ToDataAccess())
             .Select(f => f.ToDomain())
             .ToList();
@@ -56,29 +58,38 @@ public class FilmService : IFilmService
     {
         ArgumentNullException.ThrowIfNull(film);
 
-        var created = await _repository.CreateAsync(film.ToDataAccess(), cancellationToken);
+        DataFilm? created = await _repository.CreateAsync(film.ToDataAccess(), cancellationToken);
         return created?.ToDomain();
     }
 
     public async Task<DomainFilm?> UpdateAsync(DomainFilm film, CancellationToken cancellationToken = default)
     {
         ArgumentNullException.ThrowIfNull(film);
-        
-        var filmToUpdate = await GetByIdAsync(film.Id, cancellationToken);
-        if (filmToUpdate is null) return null;
 
-        var updated = await _repository.UpdateAsync(filmToUpdate.ToDataAccess(), cancellationToken);
+        DomainFilm? filmToUpdate = await GetByIdAsync(film.Id, cancellationToken);
+        if (filmToUpdate is null)
+        {
+            return null;
+        }
+
+        DataFilm? updated = await _repository.UpdateAsync(filmToUpdate.ToDataAccess(), cancellationToken);
         return updated?.ToDomain();
     }
 
     public async Task<DomainFilm?> DeleteAsync(Guid id, CancellationToken cancellationToken = default)
     {
-        if (id == Guid.Empty) return null;
-        
-        var filmToDelete = await GetByIdAsync(id, cancellationToken);
-        if (filmToDelete is null) return null;
-        
-        var result = await _repository.DeleteAsync(filmToDelete.ToDataAccess(), cancellationToken);
+        if (id == Guid.Empty)
+        {
+            return null;
+        }
+
+        DomainFilm? filmToDelete = await GetByIdAsync(id, cancellationToken);
+        if (filmToDelete is null)
+        {
+            return null;
+        }
+
+        bool result = await _repository.DeleteAsync(filmToDelete.ToDataAccess(), cancellationToken);
         return result ? null : filmToDelete;
     }
 }

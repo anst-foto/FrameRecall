@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 using FrameRecall.DataAccess.Models;
@@ -38,14 +39,14 @@ public class FilmRepositoryTests
     {
         await ClearCollectionAsync();
 
-        var film = new Film
+        Film film = new()
         {
             Title = "The Matrix",
             Description = "A hacker learns about the true nature of reality",
             Rating = FilmRating.Good
         };
 
-        var result = await _repository.CreateAsync(film);
+        Film? result = await _repository.CreateAsync(film);
 
         Assert.NotNull(result);
         Assert.Equal(film.Id, result!.Id);
@@ -53,7 +54,7 @@ public class FilmRepositoryTests
         Assert.Equal(film.Description, result.Description);
         Assert.Equal(film.Rating, result.Rating);
 
-        var fromDb = await _collection
+        Film fromDb = await _collection
             .Find(f => f.Id == film.Id)
             .FirstOrDefaultAsync();
 
@@ -66,13 +67,9 @@ public class FilmRepositoryTests
     {
         await ClearCollectionAsync();
 
-        var film = new Film
-        {
-            Title = "   ",
-            Rating = FilmRating.Good
-        };
+        Film film = new() { Title = "   ", Rating = FilmRating.Good };
 
-        var result = await _repository.CreateAsync(film);
+        Film? result = await _repository.CreateAsync(film);
 
         Assert.Null(result);
     }
@@ -82,13 +79,9 @@ public class FilmRepositoryTests
     {
         await ClearCollectionAsync();
 
-        var film = new Film
-        {
-            Title = "Test",
-            Rating = (FilmRating)999
-        };
+        Film film = new() { Title = "Test", Rating = (FilmRating)999 };
 
-        var result = await _repository.CreateAsync(film);
+        Film? result = await _repository.CreateAsync(film);
 
         Assert.Null(result);
     }
@@ -98,14 +91,10 @@ public class FilmRepositoryTests
     {
         await ClearCollectionAsync();
 
-        var film = new Film
-        {
-            Title = "Test",
-            Rating = FilmRating.Ok
-        };
+        Film film = new() { Title = "Test", Rating = FilmRating.Ok };
         film.Id = Guid.Empty;
 
-        var result = await _repository.CreateAsync(film);
+        Film? result = await _repository.CreateAsync(film);
 
         Assert.NotNull(result);
         Assert.NotEqual(Guid.Empty, result!.Id);
@@ -116,23 +105,19 @@ public class FilmRepositoryTests
     {
         await ClearCollectionAsync();
 
-        var film = new Film
-        {
-            Title = "Original",
-            Rating = FilmRating.Good
-        };
+        Film film = new() { Title = "Original", Rating = FilmRating.Good };
         await _repository.CreateAsync(film);
 
         film.Title = "Updated";
         film.Rating = FilmRating.Bad;
 
-        var result = await _repository.UpdateAsync(film);
+        Film? result = await _repository.UpdateAsync(film);
 
         Assert.NotNull(result);
         Assert.Equal("Updated", result!.Title);
         Assert.Equal(FilmRating.Bad, result.Rating);
 
-        var fromDb = await _collection
+        Film fromDb = await _collection
             .Find(f => f.Id == film.Id)
             .FirstOrDefaultAsync();
 
@@ -145,14 +130,9 @@ public class FilmRepositoryTests
     {
         await ClearCollectionAsync();
 
-        var film = new Film
-        {
-            Id = Guid.NewGuid(),
-            Title = "NonExisting",
-            Rating = FilmRating.Ok
-        };
+        Film film = new() { Id = Guid.NewGuid(), Title = "NonExisting", Rating = FilmRating.Ok };
 
-        var result = await _repository.UpdateAsync(film);
+        Film? result = await _repository.UpdateAsync(film);
 
         Assert.Null(result);
     }
@@ -162,18 +142,14 @@ public class FilmRepositoryTests
     {
         await ClearCollectionAsync();
 
-        var film = new Film
-        {
-            Title = "ToDelete",
-            Rating = FilmRating.Bad
-        };
+        Film film = new() { Title = "ToDelete", Rating = FilmRating.Bad };
         await _repository.CreateAsync(film);
 
-        var result = await _repository.DeleteAsync(film);
+        bool result = await _repository.DeleteAsync(film);
 
         Assert.True(result);
 
-        var fromDb = await _collection
+        Film? fromDb = await _collection
             .Find(f => f.Id == film.Id)
             .FirstOrDefaultAsync();
 
@@ -185,14 +161,9 @@ public class FilmRepositoryTests
     {
         await ClearCollectionAsync();
 
-        var film = new Film
-        {
-            Id = Guid.NewGuid(),
-            Title = "NonExisting",
-            Rating = FilmRating.Ok
-        };
+        Film film = new() { Id = Guid.NewGuid(), Title = "NonExisting", Rating = FilmRating.Ok };
 
-        var result = await _repository.DeleteAsync(film);
+        bool result = await _repository.DeleteAsync(film);
 
         Assert.False(result);
     }
@@ -202,7 +173,7 @@ public class FilmRepositoryTests
     {
         await ClearCollectionAsync();
 
-        var result = await _repository.GetAllAsync();
+        IReadOnlyCollection<Film> result = await _repository.GetAllAsync();
 
         Assert.NotNull(result);
         Assert.Empty(result);
@@ -213,13 +184,13 @@ public class FilmRepositoryTests
     {
         await ClearCollectionAsync();
 
-        var film1 = new Film { Title = "Film1", Rating = FilmRating.Good };
-        var film2 = new Film { Title = "Film2", Rating = FilmRating.Ok };
+        Film film1 = new() { Title = "Film1", Rating = FilmRating.Good };
+        Film film2 = new() { Title = "Film2", Rating = FilmRating.Ok };
 
         await _repository.CreateAsync(film1);
         await _repository.CreateAsync(film2);
 
-        var result = await _repository.GetAllAsync();
+        IReadOnlyCollection<Film> result = await _repository.GetAllAsync();
 
         Assert.NotNull(result);
         Assert.Equal(2, result.Count);

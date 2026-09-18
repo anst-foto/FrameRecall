@@ -80,12 +80,9 @@ public class FilmRepository : IRepository<Film>
             return null;
         }
 
-        var filter = Builders<Film>.Filter.Eq(f => f.Id, entity.Id);
+        FilterDefinition<Film> filter = Builders<Film>.Filter.Eq(f => f.Id, entity.Id);
 
-        var options = new FindOneAndReplaceOptions<Film, Film>
-        {
-            ReturnDocument = ReturnDocument.After
-        };
+        FindOneAndReplaceOptions<Film, Film> options = new() { ReturnDocument = ReturnDocument.After };
 
         try
         {
@@ -111,11 +108,11 @@ public class FilmRepository : IRepository<Film>
             return false;
         }
 
-        var filter = Builders<Film>.Filter.Eq(f => f.Id, entity.Id);
+        FilterDefinition<Film> filter = Builders<Film>.Filter.Eq(f => f.Id, entity.Id);
 
         try
         {
-            var deleted = await _collection.FindOneAndDeleteAsync(
+            Film? deleted = await _collection.FindOneAndDeleteAsync(
                 filter,
                 cancellationToken: cancellationToken);
 
@@ -131,7 +128,7 @@ public class FilmRepository : IRepository<Film>
     /// <inheritdoc />
     public async Task<IReadOnlyCollection<Film>> GetAllAsync(CancellationToken cancellationToken = default)
     {
-        var cursor = await _collection.FindAsync(
+        IAsyncCursor<Film> cursor = await _collection.FindAsync(
             Builders<Film>.Filter.Empty,
             cancellationToken: cancellationToken);
 

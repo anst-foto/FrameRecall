@@ -43,7 +43,7 @@ public class MongoDbFixture : IAsyncLifetime
     {
         await _container.StartAsync();
 
-        var client = new MongoClient(_container.GetConnectionString());
+        MongoClient client = new(_container.GetConnectionString());
         Database = client.GetDatabase("frame_recall_test_db");
         Logger = NullLogger<FilmRepository>.Instance;
     }
