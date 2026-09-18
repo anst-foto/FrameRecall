@@ -1,23 +1,24 @@
 <Solution>
   <Folder Name="/DataAccess/">
-    <Project Path="FrameRecall.DataAccess.Tests/FrameRecall.DataAccess.Tests.csproj"/>
-    <Project Path="FrameRecall.DataAccess/FrameRecall.DataAccess.csproj"/>
+    <Project Path="FrameRecall.DataAccess.Tests/FrameRecall.DataAccess.Tests.csproj" />
+    <Project Path="FrameRecall.DataAccess/FrameRecall.DataAccess.csproj" />
   </Folder>
   <Folder Name="/Services/">
-    <Project Path="FrameRecall.Services.Tests/FrameRecall.Services.Tests.csproj"/>
-    <Project Path="FrameRecall.Services/FrameRecall.Services.csproj"/>
+    <Project Path="FrameRecall.Services.Tests/FrameRecall.Services.Tests.csproj" />
+    <Project Path="FrameRecall.Services/FrameRecall.Services.csproj" />
   </Folder>
   <Folder Name="/docker/">
-    <File Path=".env"/>
-    <File Path=".env.example"/>
-    <File Path="docker-compose.yml"/>
+    <File Path=".env" />
+    <File Path=".env.example" />
+    <File Path="docker-compose.yml" />
   </Folder>
   <Folder Name="/git/">
-    <File Path=".gitattributes"/>
-    <File Path=".gitignore"/>
+    <File Path=".gitattributes" />
+    <File Path=".gitignore" />
   </Folder>
   <Folder Name="/others/">
-    <File Path=".editorconfig"/>
-    <File Path="init-mongo.js"/>
+    <File Path=".editorconfig" />
+    <File Path="Directory.Packages.props" />
+    <File Path="init-mongo.js" />
   </Folder>
 </Solution>
