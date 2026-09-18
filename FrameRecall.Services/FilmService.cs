@@ -40,7 +40,7 @@ public class FilmService : IFilmService
         CancellationToken cancellationToken = default)
     {
         IReadOnlyCollection<DataFilm> films = await _repository.GetAllAsync(cancellationToken);
-        return films.Where(f => f.Title == title)
+        return films.Where(f => f.Title.Contains(title, StringComparison.OrdinalIgnoreCase))
             .Select(f => f.ToDomain())
             .ToList();
     }
@@ -66,13 +66,13 @@ public class FilmService : IFilmService
     {
         ArgumentNullException.ThrowIfNull(film);
 
-        DomainFilm? filmToUpdate = await GetByIdAsync(film.Id, cancellationToken);
-        if (filmToUpdate is null)
+        DomainFilm? result = await GetByIdAsync(film.Id, cancellationToken);
+        if (result is null)
         {
             return null;
         }
 
-        DataFilm? updated = await _repository.UpdateAsync(filmToUpdate.ToDataAccess(), cancellationToken);
+        DataFilm? updated = await _repository.UpdateAsync(film.ToDataAccess(), cancellationToken);
         return updated?.ToDomain();
     }
 
@@ -90,6 +90,6 @@ public class FilmService : IFilmService
         }
 
         bool result = await _repository.DeleteAsync(filmToDelete.ToDataAccess(), cancellationToken);
-        return result ? null : filmToDelete;
+        return !result ? null : filmToDelete;
     }
 }
