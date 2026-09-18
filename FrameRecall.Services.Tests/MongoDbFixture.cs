@@ -24,9 +24,9 @@ public class MongoDbFixture : IAsyncLifetime
     /// База данных, к которой подключаются тесты.
     /// </summary>
     public IMongoDatabase Database { get; private set; } = null!;
-    
+
     public ILogger<FilmRepository> RepositoryLogger { get; private set; } = null!;
-    
+
 
     /// <summary>
     /// Создаёт фикстуру с образом MongoDB, соответствующим docker-compose.
@@ -44,7 +44,7 @@ public class MongoDbFixture : IAsyncLifetime
 
         MongoClient client = new(_container.GetConnectionString());
         Database = client.GetDatabase("frame_recall_test_db");
-        
+
         RepositoryLogger = NullLogger<FilmRepository>.Instance;
     }
 
